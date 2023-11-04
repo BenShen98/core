@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/vscode/devcontainers/python:0-3.11
+ARG balena_file=https://github.com/balena-io/balena-cli/releases/download/v17.2.0/balena-cli-v17.2.0-linux-x64-standalone.zip
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -41,6 +42,10 @@ WORKDIR /usr/src
 RUN git clone --depth 1 https://github.com/home-assistant/hass-release \
     && pip3 install -e hass-release/
 
+# setup balena
+RUN wget ${balena_file} -O b.zip && unzip b.zip && rm b.zip
+ENV PATH="$PATH:/usr/src/balena-cli"
+
 WORKDIR /workspaces
 
 # Install Python dependencies from requirements
@@ -50,6 +55,9 @@ RUN pip3 install -r requirements.txt
 COPY requirements_test.txt requirements_test_pre_commit.txt ./
 RUN pip3 install -r requirements_test.txt
 RUN rm -rf requirements.txt requirements_test.txt requirements_test_pre_commit.txt homeassistant/
+
+# ssh key for to balena
+COPY --chown=vscode:vscode --chmod=600 .secret/id_rsa* /home/vscode/.ssh/
 
 # Set the default shell to bash instead of sh
 ENV SHELL /bin/bash

@@ -81,6 +81,7 @@ FLOWS = {
         "bsblan",
         "bthome",
         "buienradar",
+        "butler",
         "caldav",
         "canary",
         "cast",
