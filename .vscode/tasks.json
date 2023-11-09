@@ -4,14 +4,18 @@
     {
       "label": "Run Home Assistant Core",
       "type": "shell",
-      "command": "hass -c ./config",
+      "command": "hass -c /workspaces/core/config",
       "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "new"
       },
       "problemMatcher": [],
-      "dependsOn": ["Compile English translations"]
+      "dependsOn": ["Compile English translations"],
+      "runOptions": {
+        "instanceLimit": 1,
+        "runOn": "folderOpen"
+      }
     },
     {
       "label": "Pytest",
