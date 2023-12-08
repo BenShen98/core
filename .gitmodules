@@ -1,0 +1,8 @@
+[submodule "/workspaces/core/homeassistant/components/butler"]
+	path = /workspaces/core/homeassistant/components/butler
+	url = https://github.com/BenShen98/butler.git
+	branch = backend
+[submodule "/workspaces/core/config"]
+	path = /workspaces/core/config
+	url = https://github.com/BenShen98/butler.git
+	branch = config
