@@ -11,7 +11,7 @@
         "panel": "new"
       },
       "problemMatcher": [],
-      "dependsOn": ["Compile English translations"],
+      "dependsOn": ["Compile English translations", "Develop Frontend"],
       "runOptions": {
         "instanceLimit": 1,
         "runOn": "folderOpen"
