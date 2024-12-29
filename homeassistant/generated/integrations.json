@@ -7401,6 +7401,10 @@
       "integration_type": "helper",
       "config_flow": false
     },
+    "input_fsm": {
+      "integration_type": "helper",
+      "config_flow": false
+    },
     "input_button": {
       "integration_type": "helper",
       "config_flow": false
@@ -7515,6 +7519,7 @@
     "holiday",
     "homekit_controller",
     "input_boolean",
+    "input_fsm",
     "input_button",
     "input_datetime",
     "input_number",

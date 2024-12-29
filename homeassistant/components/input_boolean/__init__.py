@@ -6,7 +6,6 @@ import logging
 from typing import Any, Self
 
 import voluptuous as vol
-
 from homeassistant.const import (
     ATTR_EDITABLE,
     CONF_ICON,
@@ -38,8 +37,11 @@ CONF_INITIAL = "initial"
 STORAGE_FIELDS: VolDictType = {
     vol.Required(CONF_NAME): vol.All(str, vol.Length(min=1)),
     vol.Optional(CONF_INITIAL): cv.boolean,
+    vol.Optional("tst"): str,
     vol.Optional(CONF_ICON): cv.icon,
 }
+
+ON_OFF_SERVICE_SCHEMA = cv.make_entity_service_schema({vol.Optional("xyz"): cv.string})
 
 CONFIG_SCHEMA = vol.Schema(
     {
@@ -48,6 +50,7 @@ CONFIG_SCHEMA = vol.Schema(
                 {
                     vol.Optional(CONF_NAME): cv.string,
                     vol.Optional(CONF_INITIAL): cv.boolean,
+                    vol.Optional("tst"): str,
                     vol.Optional(CONF_ICON): cv.icon,
                 },
                 None,
@@ -121,6 +124,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     async def reload_service_handler(service_call: ServiceCall) -> None:
         """Remove all input booleans and load new ones from config."""
         conf = await component.async_prepare_reload(skip_reset=True)
+        _LOGGER.warning(f"reload_service_handler with config {conf}")
         if conf is None:
             return
         await yaml_collection.async_load(
@@ -130,6 +134,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             ]
         )
 
+        await storage_collection.async_load()
+
     homeassistant.helpers.service.async_register_admin_service(
         hass,
         DOMAIN,
@@ -138,11 +144,17 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         schema=RELOAD_SERVICE_SCHEMA,
     )
 
-    component.async_register_entity_service(SERVICE_TURN_ON, None, "async_turn_on")
+    component.async_register_entity_service(
+        SERVICE_TURN_ON, ON_OFF_SERVICE_SCHEMA, "async_turn_on"
+    )
 
-    component.async_register_entity_service(SERVICE_TURN_OFF, None, "async_turn_off")
+    component.async_register_entity_service(
+        SERVICE_TURN_OFF, ON_OFF_SERVICE_SCHEMA, "async_turn_off"
+    )
 
-    component.async_register_entity_service(SERVICE_TOGGLE, None, "async_toggle")
+    component.async_register_entity_service(
+        SERVICE_TOGGLE, ON_OFF_SERVICE_SCHEMA, "async_toggle"
+    )
 
     return True
 
@@ -150,22 +162,25 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 class InputBoolean(collection.CollectionEntity, ToggleEntity, RestoreEntity):
     """Representation of a boolean input."""
 
-    _unrecorded_attributes = frozenset({ATTR_EDITABLE})
+    # _unrecorded_attributes = frozenset({ATTR_EDITABLE})
 
     _attr_should_poll = False
-    editable: bool
+    _attrs = {}
+    # editable: bool
+    # xyz: str
 
     def __init__(self, config: ConfigType) -> None:
         """Initialize a boolean input."""
         self._config = config
         self._attr_is_on = config.get(CONF_INITIAL, False)
         self._attr_unique_id = config[CONF_ID]
+        self._attrs = {"editable": True, "xyz": "1"}
 
     @classmethod
     def from_storage(cls, config: ConfigType) -> Self:
         """Return entity instance initialized from storage."""
         input_bool = cls(config)
-        input_bool.editable = True
+        input_bool._attrs["editable"] = True
         return input_bool
 
     @classmethod
@@ -173,7 +188,7 @@ class InputBoolean(collection.CollectionEntity, ToggleEntity, RestoreEntity):
         """Return entity instance initialized from yaml."""
         input_bool = cls(config)
         input_bool.entity_id = f"{DOMAIN}.{config[CONF_ID]}"
-        input_bool.editable = False
+        input_bool._attrs["editable"] = False
         return input_bool
 
     @property
@@ -189,7 +204,7 @@ class InputBoolean(collection.CollectionEntity, ToggleEntity, RestoreEntity):
     @property
     def extra_state_attributes(self) -> dict[str, bool]:
         """Return the state attributes of the entity."""
-        return {ATTR_EDITABLE: self.editable}
+        return self._attrs
 
     async def async_added_to_hass(self) -> None:
         """Call when entity about to be added to hass."""
@@ -203,15 +218,18 @@ class InputBoolean(collection.CollectionEntity, ToggleEntity, RestoreEntity):
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""
+        _LOGGER.warning(f"async_turn_on with {kwargs}")
         self._attr_is_on = True
         self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the entity off."""
+        _LOGGER.warning(f"async_turn_off with {kwargs}")
         self._attr_is_on = False
         self.async_write_ha_state()
 
     async def async_update_config(self, config: ConfigType) -> None:
         """Handle when the config is updated."""
+        _LOGGER.warning(f"async_update_config with {config}")
         self._config = config
         self.async_write_ha_state()

@@ -2,6 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Build pyscript",
+      "type": "shell",
+      "command": "/workspaces/pyscript/install.bash /workspaces/core /home/vscode/.local/ha-venv/bin/python"
+    },
+    {
       "label": "Run Home Assistant Core",
       "type": "shell",
       "command": "hass -c ./config",

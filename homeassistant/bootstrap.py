@@ -200,6 +200,7 @@ DEFAULT_INTEGRATIONS = {
     # Built-in helpers:
     "counter",
     "input_boolean",
+    "input_fsm",
     "input_button",
     "input_datetime",
     "input_number",
