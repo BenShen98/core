@@ -143,7 +143,7 @@ CUSTOM_INTEGRATION_SERVICES_SCHEMA = vol.Schema(
 
 VALIDATE_AS_CUSTOM_INTEGRATION = {
     # Adding translations would be a breaking change
-    "foursquare",
+    "foursquare", "pyscript",
 }
 
 

@@ -7442,6 +7442,12 @@
       "config_flow": true,
       "iot_class": "calculated"
     },
+    "pyscript": {
+      "name": "Pyscript Python scripting",
+      "integration_type": "helper",
+      "config_flow": true,
+      "iot_class": "local_push"
+    },
     "random": {
       "integration_type": "helper",
       "config_flow": true,

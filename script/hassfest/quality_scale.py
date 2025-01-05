@@ -1214,7 +1214,7 @@ NO_QUALITY_SCALE = [
     "input_button",
     "input_datetime",
     "input_number",
-    "input_select",
+    "input_select", "pyscript",
     "input_text",
     "intent_script",
     "intent",

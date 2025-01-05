@@ -13,6 +13,7 @@ FLOWS = {
         "integration",
         "min_max",
         "mold_indicator",
+        "pyscript",
         "random",
         "statistics",
         "switch_as_x",
