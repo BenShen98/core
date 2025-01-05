@@ -134,7 +134,11 @@ class InputSelectStore(Store):
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up an input select."""
-    component = EntityComponent[InputSelect](_LOGGER, DOMAIN, hass)
+    hass.data[DOMAIN] = {}
+
+    component = hass.data[DOMAIN]["comp"] = EntityComponent[InputSelect](
+        _LOGGER, DOMAIN, hass
+    )
 
     id_manager = collection.IDManager()
 
@@ -145,7 +149,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         hass, DOMAIN, DOMAIN, component, yaml_collection, InputSelect
     )
 
-    storage_collection = InputSelectStorageCollection(
+    storage_collection = hass.data[DOMAIN]["storage"] = InputSelectStorageCollection(
         InputSelectStore(
             hass, STORAGE_VERSION, STORAGE_KEY, minor_version=STORAGE_VERSION_MINOR
         ),

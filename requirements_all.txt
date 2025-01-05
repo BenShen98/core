@@ -706,6 +706,9 @@ construct==2.10.68
 # homeassistant.components.cookidoo
 cookidoo-api==0.10.0
 
+# homeassistant.components.pyscript
+croniter==2.0.2
+
 # homeassistant.components.backup
 # homeassistant.components.utility_meter
 cronsim==2.6
@@ -2986,6 +2989,9 @@ wakeonlan==2.1.0
 
 # homeassistant.components.wallbox
 wallbox==0.7.0
+
+# homeassistant.components.pyscript
+watchdog==2.3.1
 
 # homeassistant.components.folder_watcher
 watchdog==6.0.0

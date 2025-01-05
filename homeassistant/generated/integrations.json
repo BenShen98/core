@@ -4934,6 +4934,12 @@
       "config_flow": true,
       "iot_class": "local_polling"
     },
+    "pyscript": {
+      "name": "Pyscript Python scripting",
+      "integration_type": "hub",
+      "config_flow": true,
+      "iot_class": "local_push"
+    },
     "python_script": {
       "name": "Python Scripts",
       "integration_type": "hub",
@@ -7451,6 +7457,11 @@
       "integration_type": "helper",
       "config_flow": false
     },
+    "ssr": {
+      "integration_type": "helper",
+      "config_flow": false,
+      "iot_class": "local_push"
+    },
     "statistics": {
       "integration_type": "helper",
       "config_flow": true,
@@ -7539,6 +7550,7 @@
     "schedule",
     "season",
     "shopping_list",
+    "ssr",
     "statistics",
     "sun",
     "switch_as_x",

@@ -482,6 +482,7 @@ FLOWS = {
         "pvoutput",
         "pvpc_hourly_pricing",
         "pyload",
+        "pyscript",
         "qbittorrent",
         "qingping",
         "qnap",

@@ -2,14 +2,67 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Dev pyscript",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "${input:diy}",
+        "/workspaces/core",
+        "/home/vscode/.local/ha-venv/bin/python"
+      ],
+      "options": {
+        "env": {
+          "UNDER_DEV": "1"
+        }
+      }
+    },
+    {
+      "label": "Build pyscript",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "${input:diy}",
+        "/workspaces/core",
+        "/home/vscode/.local/ha-venv/bin/python"
+      ]
+    },
+    {
+      "label": "lab with core",
+      "dependsOn": ["Run Jupyter Lab", "Run Home Assistant Core"],
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Jupyter Lab",
+      "type": "shell",
+      "command": "jupyter-lab --notebook-dir=/workspaces/ha-ssr",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": false
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
       "label": "Run Home Assistant Core",
       "type": "shell",
       "command": "hass -c ./config",
       "group": "test",
       "presentation": {
         "reveal": "always",
-        "panel": "new"
+        "panel": "shared"
       },
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": true
+      },
+      "isBackground": true,
       "problemMatcher": [],
       "dependsOn": ["Compile English translations"]
     },
@@ -224,6 +277,15 @@
         "device_trigger",
         "reproduce_state",
         "significant_change"
+      ],
+      "description": "Which scaffold should be run?"
+    },
+    {
+      "id": "diy",
+      "type": "pickString",
+      "options": [
+        { "label": "pyscript", "value": "/workspaces/pyscript/install.bash" },
+        { "label": "ssr", "value": "/workspaces/ha-ssr/install.bash" }
       ],
       "description": "Which scaffold should be run?"
     }
