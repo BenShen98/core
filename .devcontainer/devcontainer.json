@@ -2,7 +2,7 @@
   "name": "Home Assistant Dev",
   "context": "..",
   "dockerFile": "../Dockerfile.dev",
-  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && script/setup",
+  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && script/setup && pip install fastapi uvicorn",
   "postStartCommand": "script/bootstrap",
   "containerEnv": {
     "PYTHONASYNCIODEBUG": "1"
@@ -14,10 +14,16 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   // Port 5683 udp is used by Shelly integration
-  "appPort": ["8123:8123", "5683:5683/udp"],
+  "appPort": ["8123:8123", "5683:5683/udp", "8000:8000"],
   "runArgs": [
     "-e",
     "GIT_EDITOR=code --wait",
+    "--env",
+    "BALENA_SUPERVISOR_HOST=localhost",
+    "--env",
+    "BALENA_SUPERVISOR_PORT=8000",
+    "--env",
+    "BALENA_SUPERVISOR_API_KEY=1111111111111111111111111111111",
     "--security-opt",
     "label=disable"
   ],
