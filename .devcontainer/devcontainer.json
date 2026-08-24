@@ -7,7 +7,8 @@
   "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && script/setup",
   "postStartCommand": "script/bootstrap",
   "containerEnv": {
-    "PYTHONASYNCIODEBUG": "1"
+    "PYTHONASYNCIODEBUG": "1",
+    "HA_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1YTNiNDk0OThkZjY0NGU0YjBhZjYzZGMwNWFlMWIyNyIsImlhdCI6MTc3NTY3ODkwMywiZXhwIjoyMDkxMDM4OTAzfQ.-nydAUb-hNvTnMkJ1O4Cyl_GmmSXzMwJwX9meyZQAsE"
   },
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
@@ -31,6 +32,14 @@
         "GitHub.vscode-pull-request-github",
         "GitHub.copilot"
       ],
+      "mcp": {
+        "servers": {
+          "playwright": {
+            "command": "npx",
+            "args": ["-y", "@microsoft/mcp-server-playwright"]
+          }
+        }
+      },
       // Please keep this file in sync with settings in home-assistant/.vscode/settings.default.jsonc
       "settings": {
         "python.experiments.optOutFrom": ["pythonTestAdapter"],
