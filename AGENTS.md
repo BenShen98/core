@@ -2,6 +2,13 @@
 
 This repository contains the core of Home Assistant, a Python 3 based home automation application.
 
+## Agent startup and SSP redirection
+
+- At the start of every agent session in this devcontainer, read [/workspaces/ha_segment_state_prediction/AGENTS.md](/workspaces/ha_segment_state_prediction/AGENTS.md) in full before performing any task. That file contains the SSP development and production server access rules; do not rely on a previous session's copy.
+- Unless the user explicitly requests Home Assistant Core work, treat [/workspaces/ha_segment_state_prediction](/workspaces/ha_segment_state_prediction) as the project root for tasks, file edits, and commands, even when the session's initial working directory is `/workspaces/core`.
+- Resolve SSP-relative paths against that project root and set the working directory explicitly for each command; do not assume a directory change persists between tool calls.
+- `/workspaces/core/config` remains the local Home Assistant configuration directory described in the SSP instructions. This redirection does not change VS Code's workspace or the session's initial working directory.
+
 ## Git Commit Guidelines
 
 - **Do NOT amend, squash, or rebase commits that have already been pushed to the PR branch after the PR is opened** - Reviewers need to follow the commit history, as well as see what changed since their last review
