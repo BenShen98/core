@@ -3,6 +3,11 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:debian
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+ARG NODE_VERSION=22.14.0
+
+ENV NPM_CONFIG_PREFIX=/usr/local
+ENV PATH="/usr/local/bin:$PATH"
+
 RUN \
     apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -27,6 +32,19 @@ RUN \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN curl -fsSLO "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" \
+    && tar -xJf "node-v${NODE_VERSION}-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
+    && rm "node-v${NODE_VERSION}-linux-x64.tar.xz" \
+    && npm install --global @openai/codex @playwright/test @playwright/mcp \
+    && PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright playwright install --with-deps chromium \
+    && chmod -R a+rX /opt/ms-playwright
+
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+ENV NODE_BIN_DIR=/usr/local/bin
+ENV NODE_BIN=/usr/local/bin/node
+ENV NPM_BIN=/usr/local/bin/npm
+ENV NPX_BIN=/usr/local/bin/npx
+
 # Add go2rtc binary
 COPY --from=ghcr.io/alexxit/go2rtc:latest /usr/local/bin/go2rtc /bin/go2rtc
 
@@ -46,6 +64,7 @@ RUN --mount=type=bind,source=.python-version,target=.python-version \
     uv python install \
     && uv venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PATH="/usr/local/bin:$PATH"
 
 # Setup hass-release
 RUN git clone --depth 1 https://github.com/home-assistant/hass-release ~/hass-release \

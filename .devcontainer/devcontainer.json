@@ -35,8 +35,15 @@
       "mcp": {
         "servers": {
           "playwright": {
-            "command": "npx",
-            "args": ["-y", "@microsoft/mcp-server-playwright"]
+            "command": "/usr/local/bin/playwright-mcp",
+            "args": [
+              "--storage-state",
+              "/workspaces/ha_segment_state_prediction/playwright/.ha_storage_state.json",
+              "--block-service-workers"
+            ],
+            "env": {
+              "PLAYWRIGHT_BROWSERS_PATH": "/opt/ms-playwright"
+            }
           }
         }
       },

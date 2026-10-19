@@ -1,0 +1,19 @@
+{
+	"mcpServers": {
+		"playwright": {
+			"type": "local",
+			"command": "/usr/local/bin/playwright-mcp",
+			"args": [
+				"--storage-state",
+				"/workspaces/ha_segment_state_prediction/playwright/.ha_storage_state.json",
+				"--block-service-workers"
+			],
+			"tools": [
+				"*"
+			],
+			"env": {
+				"PLAYWRIGHT_BROWSERS_PATH": "/opt/ms-playwright"
+			}
+		}
+	}
+}
